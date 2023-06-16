@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My weather api</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+    </style>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .main{
+            width: 100%;
+            height: 100vh;
+            background-image: url(./logo9.webp);
+            background-size: 100% 100%;
+            position: relative;
+        }
+        .card{
+            position: absolute;
+            width: 27vw;
+            height: 55vh;
+            left: 38%;
+            top: 20vh;
+            background-color: aliceblue;
+            border: 1px solid #000;
+            opacity: 0.8;
+            border-radius: 7px;
+        }
+        input{
+            width: 70%;
+            height: 5vh;
+            border-radius: 12px;
+            font-size: 2.9vh;
+            outline: none;
+            margin-top: 10px;
+            margin-left: 5%;
+
+        }
+        .btn{
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 12px;
+            margin-left: 5px;
+            margin-top: 10px;
+        }
+        .result{
+            width: 100%;
+            height: 88%;
+            margin-top: 1%;
+            background-color: aliceblue;
+            border-radius: 7px;
+            /* border: 1px solid #000; */
+            
+
+        }
+        .c_cityname{
+            font-size: 4.5vh;
+            text-align: center;
+            margin-top: 70px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .c_temp{
+            font-size: 4.9vh;
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+
+        }
+        .temp_circle{
+            position: absolute;
+            font-size: 2.9vh;
+            text-align: center;
+            top: 31%;
+            left: 61%;
+            font-family: 'Montserrat', sans-serif;
+
+        }
+        .c_weather{
+            font-size: 2.0vh;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .c_date{
+            font-size: 3.0vh;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+         .c_time{
+            font-size: 6.0vh;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+/* 
+        h1{
+            position: relative;
+            top:50%;
+            left:7%;
+            color:lightskyblue;
+            font-size:40px;
+        }
+     */
+
+       
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="card">
+             <input class="myinput" type="text" placeholder="Enter City Name" >
+            <button class="btn" onclick="getdata()">Submit</button>
+            <div class="result"></div>
+
+        </div>
+    </div>
+</body>
+<script>
+    let main = document.getElementsByClassName("main")[0]
+   let card = document.getElementsByClassName("card")[0]
+    let inp1 = document.getElementsByTagName("input")[0]
+    let result = document.getElementsByClassName("result")[0]
+    let btn = document.getElementsByTagName("button")[0]
+    
+    function getdata(){
+    
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${inp1.value}&appid=43746d95a500fe466a4173f77b84f71c&units=metric`)
+    .then(res=>res.json())
+    .then(data=>show(data))
+    inp1.value=""
+
+    }
+
+    let arr = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+
+    let a = new Date()
+    console.log(a);
+
+    var monthIndex = a.getMonth()
+    var datenum = a.getDate()
+    console.log(datenum);
+
+    var Fullmonth = arr[monthIndex]
+
+    // console.log(Fullmonth);
+
+    var r = a.getHours();
+    var m = a.getMinutes();
+    
+
+    function show(data){
+        console.log(data);
+        console.log(data.timezone);
+ 
+        result.innerHTML=`<h1 class="c_cityname">${data.name}</h1>
+              <h1 class="c_temp">${data.main.temp}<div class="temp_circle">°</div></h1>
+
+
+              <h1 class="c_weather">weather:  ${data.weather[0].main}</h1>
+              
+              <h1 class="c_date">${Fullmonth+" "+datenum}</h1>
+              <h1 class="c_time">${r+" "+":"+" "+m}</h1>`
+
+
+if(data.weather[0].main=="Haze"){
+let main = document.getElementsByClassName("main")[0]
+main.style.backgroundImage='url("pic4.gif")'
+
+} 
+else if(data.weather[0].main=="Clouds"){
+let main = document.getElementsByClassName("main")[0]
+main.style.backgroundImage='url("pic8.gif")'
+
+} 
+else if(data.weather[0].main=="Smoke"){
+let main = document.getElementsByClassName("main")[0]
+main.style.backgroundImage='url("pic9.gif")'
+
+} 
+else if(data.weather[0].main=="Clear"){
+let main = document.getElementsByClassName("main")[0]
+main.style.backgroundImage='url("pic6.gif")'
+
+}            
+
+    }
+</script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gouhar's Weather</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: cursive;
+        background-size: 100% 100%;
+        overflow: hidden;
+    }
+
+    body {
+        background-color: rgb(61, 61, 78);
+    }
+
+    input {
+        margin-top: 100px;
+        margin-left: 50px;
+        padding: 20px;
+        border-radius: 8px;
+        border: none;
+        color: rgb(43, 15, 70);
+        background-color: crimson;
+        font-size: larger;
+        outline: none;
+    }
+
+    div {
+        position: relative;
+        top: 12px;
+        left: 25px;
+        color: coral;
+        font-size: 12px;
+    }
+
+    
+</style>
+
+<body>
+    <input type="text" placeholder="Enter City Name" name="" id="">
+    <div></div>
+</body>
+<script>
+    var inp = document.querySelector("input")
+    var show = document.querySelector("div")
+    console.log(inp, show, "test");
+
+    inp.addEventListener("keyup", () => {
+        var value = inp.value
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inp.value}&units=metric&appid=a7cffca7c299e275d56fc2be97f4ad8b`)
+            .then(res => res.json())
+            .then(data => myfun(data))
+    })
+
+    function myfun(data) {
+        console.log(data, "function data");
+        var id = data.id;
+        var location = data.location;
+        var weather = data.weather[0].main;
+
+        switch (weather) {
+            case "moderate rain": document.body.style.backgroundImage = `url(./pic8.gif)`
+                break;
+            default: document.body.style.backgroundImage = `url(./pic4.gif)`
+                break;
+            case "Clear": document.body.style.backgroundImage = `url(./pic7.gif)`
+                break;
+            case "smoke": document.body.style.backgroundImage = `url(./gif9.gif)`
+                break;
+            case "rain": document.body.style.backgroundImage = `url(./gif5.gif)`
+                break;
+        }
+
+        show.innerHTML = `
+        <div>
+            <h1>city ID: ${id}</h1>
+            <h1>Location: ${location}</h1>
+            <h1>Weather: ${weather}</h1>
+            <h1>Clouds:${data.clouds.all}</h1>
+            <h1>Coordinates:${data.coord.lat}</h1>
+            <h1>Name:${data.name}</h1>
+            <h1>Visibility:${data.visibility}</h1>
+            <h1>Sensation:${data.main.feels_like}</h1>
+            <h1>Wind:${data.wind.speed}</h1>
+            <h1>Data:${data.dt}</h1>
+            <h1>sys:${data.sys.country}</h1>
+        </div>`
+    }
+</script>
+
+</html>
